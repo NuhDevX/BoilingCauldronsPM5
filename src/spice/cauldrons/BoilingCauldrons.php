@@ -18,10 +18,10 @@ declare(strict_types=1);
 
 namespace spice\cauldrons;
 
-use pocketmine\block\BlockIds;
+use pocketmine\block\BlockTypeIds;
 use pocketmine\item\Item;
-use pocketmine\item\ItemIds;
-use pocketmine\level\Level;
+use pocketmine\item\ItemTypeIds;
+use pocketmine\world\World;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\SingletonTrait;
 use spice\cauldrons\block\BlockManager;
@@ -49,15 +49,15 @@ class BoilingCauldrons extends PluginBase
      */
     public static function canBeCooked(Item $item): bool
     {
-        switch ($item->getId()) {
-            case ItemIds::RAW_BEEF:
-            case ItemIds::RAW_CHICKEN:
-            case ItemIds::RAW_FISH:
-            case ItemIds::RAW_MUTTON:
-            case ItemIds::RAW_PORKCHOP:
-            case ItemIds::RAW_SALMON:
-            case ItemIds::RAW_RABBIT:
-            case ItemIds::POTATO:
+        switch ($item->getTypeId()) {
+            case ItemTypeIds::RAW_BEEF:
+            case ItemTypeIds::RAW_CHICKEN:
+            case ItemTypeIds::RAW_FISH:
+            case ItemTypeIds::RAW_MUTTON:
+            case ItemTypeIds::RAW_PORKCHOP:
+            case ItemTypeIds::RAW_SALMON:
+            case ItemTypeIds::RAW_RABBIT:
+            case ItemTypeIds::POTATO:
                 return true;
             default:
                 return false;
@@ -71,44 +71,44 @@ class BoilingCauldrons extends PluginBase
      */
     public static function getCookedItem(Item $item): Item
     {
-        switch ($item->getId()) {
-            case ItemIds::RAW_BEEF:
-                $id = ItemIds::COOKED_BEEF;
+        switch ($item->getTypeId()) {
+            case ItemTypeIds::RAW_BEEF:
+                $id = ItemTypeIds::COOKED_BEEF;
                 break;
-            case ItemIds::RAW_CHICKEN:
-                $id = ItemIds::COOKED_CHICKEN;
+            case ItemTypeIds::RAW_CHICKEN:
+                $id = ItemTypeIds::COOKED_CHICKEN;
                 break;
-            case ItemIds::RAW_FISH:
-                $id = ItemIds::COOKED_FISH;
+            case ItemTypeIds::RAW_FISH:
+                $id = ItemTypeIds::COOKED_FISH;
                 break;
-            case ItemIds::RAW_MUTTON:
-                $id = ItemIds::MUTTON_COOKED;
+            case ItemTypeIds::RAW_MUTTON:
+                $id = ItemTypeIds::MUTTON_COOKED;
                 break;
-            case ItemIds::RAW_PORKCHOP:
-                $id = ItemIds::COOKED_PORKCHOP;
+            case ItemTypeIds::RAW_PORKCHOP:
+                $id = ItemTypeIds::COOKED_PORKCHOP;
                 break;
-            case ItemIds::RAW_SALMON:
-                $id = ItemIds::COOKED_SALMON;
+            case ItemTypeIds::RAW_SALMON:
+                $id = ItemTypeIds::COOKED_SALMON;
                 break;
-            case ItemIds::RAW_RABBIT:
-                $id = ItemIds::COOKED_RABBIT;
+            case ItemTypeIds::RAW_RABBIT:
+                $id = ItemTypeIds::COOKED_RABBIT;
                 break;
-            case ItemIds::POTATO:
-                $id = ItemIds::BAKED_POTATO;
+            case ItemTypeIds::POTATO:
+                $id = ItemTypeIds::BAKED_POTATO;
                 break;
             default:
-                $id = BlockIds::AIR;
+                $id = BlockTypeIds::AIR;
         }
-        return Item::get($id);
+        return $id;
     }
 
     /**
      * @param Level $level
      * @return bool
      */
-    public function canBeUsedInWorld(Level $level): bool
+    public function canBeUsedInWorld(World $world): bool
     {
-        return in_array($level->getFolderName(), $this->settings["enabled-worlds"] ?? [], true);
+        return in_array($world->getFolderName(), $this->settings["enabled-worlds"] ?? [], true);
     }
 
     /**
